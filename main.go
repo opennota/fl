@@ -69,6 +69,14 @@ var hopHeaders = []string{
 	"Upgrade",
 }
 
+func getHost(hostport string) string {
+	host, _, err := net.SplitHostPort(hostport)
+	if err != nil {
+		return hostport
+	}
+	return host
+}
+
 func reverseProxy(w http.ResponseWriter, req *http.Request) {
 	logRequest(req)
 
@@ -107,13 +115,9 @@ func reverseProxy(w http.ResponseWriter, req *http.Request) {
 
 	cookies := resp.Cookies()
 	resp.Header.Del("Set-Cookie")
-	reqHost, _, err := net.SplitHostPort(req.Host)
+	reqHost := getHost(req.Host)
 	for _, cookie := range cookies {
-		if err == nil {
-			cookie.Domain = reqHost
-		} else {
-			cookie.Domain = req.Host
-		}
+		cookie.Domain = reqHost
 		resp.Header.Add("Set-Cookie", cookie.String())
 	}
 
