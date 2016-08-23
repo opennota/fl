@@ -38,7 +38,7 @@ var (
 
 	host string
 
-	c http.Client
+	tr *http.Transport
 )
 
 func copyHeader(dst, src http.Header) {
@@ -96,7 +96,7 @@ func reverseProxy(w http.ResponseWriter, req *http.Request) {
 	outReq.Header.Set("Referer", host)
 	outReq.Header.Set("Origin", host)
 
-	resp, err := c.Transport.RoundTrip(outReq)
+	resp, err := tr.RoundTrip(outReq)
 	if err != nil {
 		log.Printf("proxy error: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -155,7 +155,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("can't connect to Tor: %v", err)
 		}
-		c.Transport = &http.Transport{
+		tr = &http.Transport{
 			Dial: dialer.Dial,
 		}
 		host = torHost
@@ -165,7 +165,7 @@ func main() {
 			Scheme: "http",
 			Host:   *i2pAddr,
 		}
-		c.Transport = &http.Transport{
+		tr = &http.Transport{
 			Proxy: http.ProxyURL(&proxyURL),
 		}
 		host = i2pHost
