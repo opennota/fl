@@ -34,7 +34,7 @@ var (
 	torAddr  = flag.String("tor", "127.0.0.1:9050", "Tor service address")
 	i2pAddr  = flag.String("i2p", "127.0.0.1:4444", "I2P service address")
 	forceI2P = flag.Bool("force-i2p", false, "Force I2P")
-	addr     = flag.String("http", ":1338", "HTTP service address")
+	addr     = flag.String("http", ":8080", "HTTP service address")
 
 	host string
 
