@@ -5,7 +5,7 @@ fl is a reverse proxy to the Flibusta e-library via Tor or I2P.
 
 ## Install
 
-    go get github.com/opennota/fl
+    go get -u github.com/opennota/fl
 
 ## Use
 
