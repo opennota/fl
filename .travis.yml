@@ -1,0 +1,15 @@
+language: go
+sudo: false
+
+go:
+  - 1.x
+  - master
+
+install:
+  - go get golang.org/x/net/proxy
+  - go build ./...
+
+script:
+  - test -z "$(gofmt -l . | tee /dev/stderr)"
+  - go test -v ./...
+
